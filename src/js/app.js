@@ -3,6 +3,7 @@ require('webpack-jquery-ui');
 import '../css/styles.css';
 
 import './list';
+import './card';
 
 /**
  * jtrello
@@ -64,7 +65,7 @@ const jtrello = (function() {
   }
 
   function deleteCard() {
-    console.log("This should delete the card you clicked on");
+    $(this).closest('.card').data('jtrello-card').destroy();
   }
 
   // Metod för att rita ut element i DOM:en
@@ -83,6 +84,7 @@ const jtrello = (function() {
     bindEvents();
 
     $('.list').list();
+    $('.card').card();
   }
 
   // All kod här
