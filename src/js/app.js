@@ -1,7 +1,8 @@
 import $ from 'jquery';
-
-// require('webpack-jquery-ui');
+require('webpack-jquery-ui');
 import '../css/styles.css';
+
+import './list';
 
 /**
  * jtrello
@@ -53,7 +54,7 @@ const jtrello = (function() {
   }
 
   function deleteList() {
-    console.log("This should delete the list you clicked on");
+    $(this).closest('.list').data('jtrello-list').destroy();
   }
 
   /* =========== Metoder för att hantera kort i listor nedan =========== */
@@ -80,6 +81,8 @@ const jtrello = (function() {
     createDialogs();
 
     bindEvents();
+
+    $('.list').list();
   }
 
   // All kod här
