@@ -119,7 +119,11 @@ input {
   transition: opacity 0.25s ease;
   height: 16px;
   position: relative;
-  z-index: 0;
+  cursor: pointer;
+}
+
+.card.ui-draggable-dragging {
+  z-index: 9999;
 }
 
 .card .button {
