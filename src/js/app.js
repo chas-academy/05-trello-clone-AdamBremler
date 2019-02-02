@@ -43,6 +43,7 @@ const jtrello = (function() {
         {
           text: 'OK',
           click: function() {
+            $(this).data('card').option('description', $(this).find('.description').val());
             $(this).dialog('close');
           }
         }

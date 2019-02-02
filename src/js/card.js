@@ -2,7 +2,9 @@ import $ from 'jquery';
 require('webpack-jquery-ui');
 
 $.widget('jtrello.card', {
-    options: {},
+    options: {
+        description: ''
+    },
   
     _create: function() {
         this.element.draggable({
@@ -28,7 +30,9 @@ $.widget('jtrello.card', {
     displayDialog: function() {
         let dialog = this.options.infoDialog;
 
+        dialog.data('card', this);
         dialog.dialog('option', 'title', this.element.find('.title').text());
+        dialog.find('.description').val(this.options.description);
 
         dialog.dialog('open');
     },

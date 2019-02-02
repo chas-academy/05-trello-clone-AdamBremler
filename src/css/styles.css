@@ -135,6 +135,12 @@ input {
   font-size: 1.5em;
 }
 
+#card-info-dialog .description {
+  min-width: 97%;
+  max-width: 97%;
+  min-height: 5em;
+}
+
 .card .button {
   position: absolute;
   top: 6px;
