@@ -19,6 +19,18 @@ $.widget('jtrello.card', {
                 $(this).show();
             }
         });
+
+        this._on(this.element, {
+            click: 'displayDialog'
+        });
+    },
+
+    displayDialog: function() {
+        let dialog = this.options.infoDialog;
+
+        dialog.dialog('option', 'title', this.element.find('.title').text());
+
+        dialog.dialog('open');
     },
 
     _destroy: function() {

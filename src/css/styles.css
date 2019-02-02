@@ -126,6 +126,15 @@ input {
   z-index: 9999;
 }
 
+.ui-widget-overlay {
+  background-color: #111;
+  opacity: 0.2;
+}
+
+.ui-dialog-title {
+  font-size: 1.5em;
+}
+
 .card .button {
   position: absolute;
   top: 6px;

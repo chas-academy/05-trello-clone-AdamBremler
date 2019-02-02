@@ -22,6 +22,7 @@ const jtrello = (function() {
   function captureDOMEls() {
     DOM.$board = $('.board');
     DOM.$listDialog = $('#list-creation-dialog');
+    DOM.$cardInfoDialog = $('#card-info-dialog');
     DOM.$columns = $('.column');
     DOM.$lists = $('.list');
     DOM.$cards = $('.card');
@@ -34,7 +35,20 @@ const jtrello = (function() {
   }
 
   function createTabs() {}
-  function createDialogs() {}
+  function createDialogs() {
+    DOM.$cardInfoDialog.dialog({
+      autoOpen: false,
+      modal: true,
+      buttons: [
+        {
+          text: 'OK',
+          click: function() {
+            $(this).dialog('close');
+          }
+        }
+      ]
+    });
+  }
 
   /*
   *  Denna metod kommer nyttja variabeln DOM för att binda eventlyssnare till
@@ -83,8 +97,12 @@ const jtrello = (function() {
 
     bindEvents();
 
-    $('.list').list();
-    $('.card').card();
+    DOM.$lists.list();
+    DOM.$cards.card();
+
+    DOM.$cards.each(function() {
+      $(this).card("option", "infoDialog", DOM.$cardInfoDialog);
+    });
   }
 
   // All kod här
