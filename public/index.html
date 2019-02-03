@@ -80,11 +80,22 @@
     </div>
 
     <div id="card-info-dialog">
-        Description:
-        <textarea class="description" placeholder="Write a description for the card here..."></textarea>
-        <br /><br />
-        Deadline:
-        <input type="text" class="datepicker">
+        <div id="card-info-dialog-tabs" class="tabs">
+            <ul>
+                <li><a href="#tabs-1">General</a></li>
+                <li><a href="#tabs-2">Color</a></li>
+            </ul>
+            <div id="tabs-1">
+                Description:
+                <textarea class="description" placeholder="Write a description for the card here..."></textarea>
+                <br /><br />
+                Deadline:
+                <input type="text" class="datepicker">
+            </div>
+            <div id="tabs-2">
+                <div class="colorpicker"></div>
+            </div>
+        </div>
     </div>
 <script type="text/javascript" src="./bundle.js"></script></body>
 </html>

@@ -1,6 +1,9 @@
 import $ from 'jquery';
 require('webpack-jquery-ui');
 import moment from 'moment';
+import 'wcolpick';
+import '../../node_modules/wcolpick/wcolpick/wcolpick.css';
+
 import '../../node_modules/jquery-ui/themes/base/all.css';
 import '../css/styles.css';
 
@@ -35,7 +38,11 @@ const jtrello = (function() {
     DOM.$newCardForm = $('form.new-card');
     DOM.$deleteCardButton = $('.card > button.delete');
 
+    DOM.$cardTabs = $('#card-info-dialog-tabs');
+
     DOM.$cardDatepicker = $('#card-info-dialog .datepicker');
+
+    DOM.$cardColorpicker = $('#card-info-dialog .colorpicker');
   }
 
   function createTabs() {}
@@ -47,12 +54,17 @@ const jtrello = (function() {
         {
           text: 'OK',
           click: function() {
-            $(this).data('card').option('description', $(this).find('.description').val());
+            let card = $(this).data('card');
+
+            card.option('description', $(this).find('.description').val());
             
             let deadline = moment($(this).find('.datepicker').val());
             if(deadline.isValid()) {
-              $(this).data('card').option('deadline', deadline);
+              card.option('deadline', deadline);
             }
+
+            card.option('color', DOM.$cardColorpicker.getColor('hex', false));
+            card.element.css('background-color', '#' + card.options.color);
 
             $(this).dialog('close');
           }
@@ -62,7 +74,16 @@ const jtrello = (function() {
       hide: 'puff'
     });
 
+    DOM.$cardTabs.tabs();
+
     DOM.$cardDatepicker.datepicker({ dateFormat: 'yy-mm-dd' });
+
+    DOM.$cardColorpicker.loads({
+      enableAlpha: false,
+      compactLayout: true,
+      layout: 'hex',
+      variant: 'small'
+    });
 
     DOM.$lists.list();
     DOM.$cards.card();
@@ -103,7 +124,7 @@ const jtrello = (function() {
   }
 
   function deleteCard() {
-    $(this).closest('.card').data('jtrello-card').destroy();
+    $(this).closest('.card').data('jtrello-card').remove();
   }
 
   // Metod för att rita ut element i DOM:en

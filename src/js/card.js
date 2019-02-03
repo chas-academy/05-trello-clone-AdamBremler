@@ -1,10 +1,10 @@
 import $ from 'jquery';
 require('webpack-jquery-ui');
-import moment from 'moment';
 
 $.widget('jtrello.card', {
     options: {
         description: '',
+        color: 'ffffff'
     },
   
     _create: function() {
@@ -35,11 +35,14 @@ $.widget('jtrello.card', {
         dialog.dialog('option', 'title', this.element.find('.title').text());
         dialog.find('.description').val(this.options.description);
         dialog.find('.datepicker').val(this.options.deadline.format('YYYY-MM-DD'));
+        dialog.find('.colorpicker').setColor(this.options.color, true);
 
+        dialog.find('.tabs').tabs('option', 'active', 0);
         dialog.dialog('open');
     },
 
-    _destroy: function() {
+    remove: function() {
+        this.destroy();
         this.element.remove();
     }
 });

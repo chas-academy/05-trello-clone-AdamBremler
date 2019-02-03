@@ -120,6 +120,7 @@ input {
   position: relative;
   cursor: pointer;
   word-wrap: break-word;
+  text-shadow: 1px 1px 1px #fff;
 }
 
 .card.ui-draggable-dragging {
@@ -146,6 +147,16 @@ input {
   border-radius: 3px;
   min-height: 5em;
   font-family: inherit;
+}
+
+#card-info-dialog-tabs {
+  background-color: inherit;
+  border: none;
+}
+
+#card-info-dialog-tabs .ui-tabs-nav {
+  border: none;
+  background-color: inherit;
 }
 
 .card .button {
