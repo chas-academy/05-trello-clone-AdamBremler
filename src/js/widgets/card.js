@@ -1,5 +1,6 @@
 import $ from 'jquery';
 require('webpack-jquery-ui');
+import moment from 'moment';
 
 $.widget('jtrello.card', {
     options: {
@@ -26,6 +27,11 @@ $.widget('jtrello.card', {
         this._on(this.element, {
             click: 'displayDialog'
         });
+
+        let deleteButton = $(this.element).find('button.delete');
+        this._on(deleteButton, {
+            click: 'remove'
+        });
     },
 
     displayDialog: function() {
@@ -39,6 +45,14 @@ $.widget('jtrello.card', {
 
         dialog.find('.tabs').tabs('option', 'active', 0);
         dialog.dialog('open');
+    },
+
+    _setOption: function(key, value) {
+        if(key === 'deadline') {
+            this.element.attr('title', 'Deadline ' + value.fromNow());
+        }
+
+        this._super(key, value);
     },
 
     remove: function() {

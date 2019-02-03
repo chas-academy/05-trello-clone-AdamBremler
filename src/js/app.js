@@ -7,8 +7,8 @@ import '../../node_modules/wcolpick/wcolpick/wcolpick.css';
 import '../../node_modules/jquery-ui/themes/base/all.css';
 import '../css/styles.css';
 
-import './list';
-import './card';
+import './widgets/list';
+import './widgets/card';
 
 /**
  * jtrello
@@ -36,7 +36,6 @@ const jtrello = (function() {
     DOM.$deleteListButton = $('.list-header > button.delete');
 
     DOM.$newCardForm = $('form.new-card');
-    DOM.$deleteCardButton = $('.card > button.delete');
 
     DOM.$cardTabs = $('#card-info-dialog-tabs');
 
@@ -52,7 +51,7 @@ const jtrello = (function() {
       modal: true,
       buttons: [
         {
-          text: 'OK',
+          text: 'Save',
           click: function() {
             let card = $(this).data('card');
 
@@ -66,6 +65,12 @@ const jtrello = (function() {
             card.option('color', DOM.$cardColorpicker.getColor('hex', false));
             card.element.css('background-color', '#' + card.options.color);
 
+            $(this).dialog('close');
+          }
+        },
+        {
+          text: 'Cancel',
+          click: function() {
             $(this).dialog('close');
           }
         }
@@ -86,13 +91,6 @@ const jtrello = (function() {
     });
 
     DOM.$lists.list();
-    DOM.$cards.card();
-
-    DOM.$cards.each(function() {
-      $(this).card('option', 'infoDialog', DOM.$cardInfoDialog);
-      // Default deadline is one week from now
-      $(this).card('option', 'deadline', moment().add(1, 'week'));
-    });
   }
 
   /*
@@ -104,7 +102,6 @@ const jtrello = (function() {
     DOM.$deleteListButton.on('click', deleteList);
 
     DOM.$newCardForm.on('submit', createCard);
-    DOM.$deleteCardButton.on('click', deleteCard);
   }
 
   /* ============== Metoder för att hantera listor nedan ============== */
@@ -114,17 +111,37 @@ const jtrello = (function() {
   }
 
   function deleteList() {
-    $(this).closest('.list').data('jtrello-list').destroy();
+    $(this).closest('.list').data('jtrello-list').remove();
   }
 
   /* =========== Metoder för att hantera kort i listor nedan =========== */
   function createCard(event) {
     event.preventDefault();
-    console.log("This should create a new card");
+
+    let titleEl = $(event.target).find('[name=title]');
+
+    let newCard = $(`
+      <li class="card">
+        <span class="title">${titleEl.val()}</span>
+        <button class="button delete">X</button>
+      </li>
+    `);
+    
+    $(this).parent().before(newCard);
+
+    newCard.card();
+
+    newCard.card('option', 'infoDialog', DOM.$cardInfoDialog);
+    // Default deadline is one week from now
+    newCard.card('option', 'deadline', moment().add(1, 'week'));
+
+    DOM.$cards.push(newCard);
+
+    titleEl.val('');
   }
 
   function deleteCard() {
-    $(this).closest('.card').data('jtrello-card').remove();
+    $(this).closest('.card').card('remove');
   }
 
   // Metod för att rita ut element i DOM:en

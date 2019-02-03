@@ -13,7 +13,8 @@ $.widget('jtrello.list', {
         });
     },
 
-    _destroy: function() {
+    remove: function() {
+        this.destroy();
         this.element.parent().remove();
     }
 });
