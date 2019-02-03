@@ -1,6 +1,5 @@
 import $ from 'jquery';
-require('webpack-jquery-ui');
-import moment from 'moment';
+import 'webpack-jquery-ui';
 
 $.widget('jtrello.card', {
     options: {
