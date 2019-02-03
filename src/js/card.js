@@ -1,9 +1,10 @@
 import $ from 'jquery';
 require('webpack-jquery-ui');
+import moment from 'moment';
 
 $.widget('jtrello.card', {
     options: {
-        description: ''
+        description: '',
     },
   
     _create: function() {
@@ -33,6 +34,7 @@ $.widget('jtrello.card', {
         dialog.data('card', this);
         dialog.dialog('option', 'title', this.element.find('.title').text());
         dialog.find('.description').val(this.options.description);
+        dialog.find('.datepicker').val(this.options.deadline.format('YYYY-MM-DD'));
 
         dialog.dialog('open');
     },

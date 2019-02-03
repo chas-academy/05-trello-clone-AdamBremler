@@ -1,5 +1,7 @@
 import $ from 'jquery';
 require('webpack-jquery-ui');
+import moment from 'moment';
+import '../../node_modules/jquery-ui/themes/base/all.css';
 import '../css/styles.css';
 
 import './list';
@@ -32,10 +34,12 @@ const jtrello = (function() {
 
     DOM.$newCardForm = $('form.new-card');
     DOM.$deleteCardButton = $('.card > button.delete');
+
+    DOM.$cardDatepicker = $('#card-info-dialog .datepicker');
   }
 
   function createTabs() {}
-  function createDialogs() {
+  function createWidgets() {
     DOM.$cardInfoDialog.dialog({
       autoOpen: false,
       modal: true,
@@ -44,10 +48,29 @@ const jtrello = (function() {
           text: 'OK',
           click: function() {
             $(this).data('card').option('description', $(this).find('.description').val());
+            
+            let deadline = moment($(this).find('.datepicker').val());
+            if(deadline.isValid()) {
+              $(this).data('card').option('deadline', deadline);
+            }
+
             $(this).dialog('close');
           }
         }
-      ]
+      ],
+      show: 'fade',
+      hide: 'puff'
+    });
+
+    DOM.$cardDatepicker.datepicker({ dateFormat: 'yy-mm-dd' });
+
+    DOM.$lists.list();
+    DOM.$cards.card();
+
+    DOM.$cards.each(function() {
+      $(this).card('option', 'infoDialog', DOM.$cardInfoDialog);
+      // Default deadline is one week from now
+      $(this).card('option', 'deadline', moment().add(1, 'week'));
     });
   }
 
@@ -94,16 +117,9 @@ const jtrello = (function() {
     // Förslag på privata metoder
     captureDOMEls();
     createTabs();
-    createDialogs();
+    createWidgets();
 
     bindEvents();
-
-    DOM.$lists.list();
-    DOM.$cards.card();
-
-    DOM.$cards.each(function() {
-      $(this).card("option", "infoDialog", DOM.$cardInfoDialog);
-    });
   }
 
   // All kod här
